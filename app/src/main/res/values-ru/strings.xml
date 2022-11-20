@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_hint">Найти слово</string>
+    <string name="action_retry_text">Повтор</string>
+    <string name="error_label_text">Ошибка соединения</string>
+    <string name="history_button_content_description">История</string>
+    <string name="description_picture_content_description">Картинка</string>
+</resources>

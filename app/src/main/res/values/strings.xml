@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name" translatable="false">Fastor</string>
+    <string name="search_hint">Search word</string>
+    <string name="action_retry_text">Retry</string>
+    <string name="error_label_text">Connection error</string>
+    <string name="history_button_content_description">History</string>
+    <string name="description_picture_content_description">Picture</string>
+</resources>
