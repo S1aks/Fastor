@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,16 +37,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             FastorTheme {
                 val navController = rememberNavController()
+                val appName = stringResource(id = R.string.app_name)
+                var topAppBarTitle by rememberSaveable { mutableStateOf(appName) }
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text(stringResource(id = R.string.app_name)) },
+                            title = { Text(topAppBarTitle) },
                             actions = {
                                 if (mainViewModel.showHistoryIcon) {
                                     IconButton(onClick = {
-                                        navController.navigate("history") {
-                                            popUpTo("main")
-                                        }
+                                        navController.navigate("history")
                                     }) {
                                         Icon(
                                             Icons.Filled.History,
@@ -56,9 +60,20 @@ class MainActivity : ComponentActivity() {
                 ) {
                     if (mainViewModel.errorMessage.isBlank()) {
                         NavHost(navController = navController, startDestination = "main") {
-                            composable("main") { MainScreen(navController, mainViewModel) }
-                            composable("description") { DescriptionScreen(mainViewModel) }
-                            composable("history") { HistoryScreen(navController, mainViewModel) }
+                            composable("main") {
+                                MainScreen(navController, mainViewModel)
+                                topAppBarTitle = appName
+                            }
+                            composable("description") {
+                                DescriptionScreen(mainViewModel)
+                                topAppBarTitle =
+                                    "$appName - ${stringResource(id = R.string.title_description)}"
+                            }
+                            composable("history") {
+                                HistoryScreen(navController, mainViewModel)
+                                topAppBarTitle =
+                                    "$appName - ${stringResource(id = R.string.title_history)}"
+                            }
                         }
                     } else {
                         Column(

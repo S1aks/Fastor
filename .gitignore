@@ -65,6 +65,7 @@ gen-external-apklibs
 
 # NDK
 obj/
+*.cxx
 
 # IntelliJ IDEA
 *.iml

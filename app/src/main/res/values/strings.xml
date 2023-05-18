@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">Fastor</string>
+    <string name="title_description">Description</string>
+    <string name="title_history">History</string>
     <string name="search_hint">Search word</string>
     <string name="action_retry_text">Retry</string>
     <string name="error_label_text">Connection error</string>
     <string name="history_button_content_description">History</string>
     <string name="description_picture_content_description">Picture</string>
+    <string name="menu_item_delete">Delete</string>
+    <string name="menu_item_clear">Clear all</string>
 </resources>

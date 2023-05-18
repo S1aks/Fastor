@@ -14,12 +14,11 @@ abstract class HistoryDataBase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
     companion object {
-        private var daoInstance: HistoryDao? = null
-        fun getDaoInstance(): HistoryDao =
-            daoInstance ?: Room
+        private var instance: HistoryDataBase? = null
+        fun getInstance(): HistoryDataBase =
+            instance ?: Room
                 .databaseBuilder(App.appContext, HistoryDataBase::class.java, "HistoryDB")
                 .fallbackToDestructiveMigration()
                 .build()
-                .historyDao()
     }
 }

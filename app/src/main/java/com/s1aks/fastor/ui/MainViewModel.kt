@@ -11,7 +11,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
-class MainViewModel() : ViewModel() {
+class MainViewModel : ViewModel() {
     private val repository = RepositoryImpl()
     var searchResponse: List<DataModel> by mutableStateOf(listOf())
     var showHistoryIcon: Boolean by mutableStateOf(true)
@@ -28,9 +28,8 @@ class MainViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 searchResponse = repository.getData(word)
-            }
-            catch (_: CancellationException) {}
-            catch (e: Exception) {
+            } catch (_: CancellationException) {
+            } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
         }
@@ -56,6 +55,18 @@ class MainViewModel() : ViewModel() {
     fun saveToHistory(word: String) {
         viewModelScope.launch {
             repository.saveToDB(word)
+        }
+    }
+
+    fun deleteFromHistory(word: String) {
+        viewModelScope.launch {
+            repository.deleteHistoryEntity(word)
+        }
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch {
+            repository.clearHistory()
         }
     }
 
