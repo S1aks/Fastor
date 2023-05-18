@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s1aks.fastor.data.RepositoryImpl
 import com.s1aks.fastor.data.entities.DataModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.cancellation.CancellationException
 
 class MainViewModel : ViewModel() {
@@ -27,7 +29,7 @@ class MainViewModel : ViewModel() {
         }
         viewModelScope.launch {
             try {
-                searchResponse = repository.getData(word)
+                searchResponse = withContext(Dispatchers.IO) { repository.getData(word) }
             } catch (_: CancellationException) {
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
@@ -39,7 +41,7 @@ class MainViewModel : ViewModel() {
         cancelJob()
         viewModelScope.launch {
             try {
-                clickedData = repository.getData(word)[0]
+                clickedData = withContext(Dispatchers.IO) { repository.getData(word)[0] }
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
@@ -48,25 +50,27 @@ class MainViewModel : ViewModel() {
 
     fun getHistory() {
         viewModelScope.launch {
-            history = repository.getHistoryList()
+            history = withContext(Dispatchers.IO) { repository.getHistoryList() }
         }
     }
 
     fun saveToHistory(word: String) {
         viewModelScope.launch {
-            repository.saveToDB(word)
+            withContext(Dispatchers.IO) { repository.saveToDB(word) }
         }
     }
 
     fun deleteFromHistory(word: String) {
         viewModelScope.launch {
-            repository.deleteHistoryEntity(word)
+            history = history.minus(word)
+            withContext(Dispatchers.IO) { repository.deleteHistoryEntity(word) }
         }
     }
 
     fun clearHistory() {
         viewModelScope.launch {
-            repository.clearHistory()
+            history = listOf()
+            withContext(Dispatchers.IO) { repository.clearHistory() }
         }
     }
 

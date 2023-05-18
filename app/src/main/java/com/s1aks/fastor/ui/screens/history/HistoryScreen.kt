@@ -48,17 +48,21 @@ fun HistoryScreen(navController: NavController, viewModel: MainViewModel) {
 @Composable
 fun HistoryList(navController: NavController, viewModel: MainViewModel) {
     val menuItems = listOf(
-        MenuItem(stringResource(R.string.menu_item_delete)) { word -> viewModel.deleteFromHistory(word) },
+        MenuItem(stringResource(R.string.menu_item_delete)) { word ->
+            viewModel.deleteFromHistory(
+                word
+            )
+        },
         MenuItem(stringResource(R.string.menu_item_clear)) { viewModel.clearHistory() }
     )
     LazyColumn {
-        items(viewModel.history) { listItem ->
+        items(viewModel.history) { historyItem ->
             HistoryItem(
-                word = listItem,
+                word = historyItem,
                 dropDownItems = menuItems,
                 onItemClick = {
                     viewModel.clickedData = null
-                    viewModel.getHistoryData(listItem)
+                    viewModel.getHistoryData(historyItem)
                     navController.navigate("description")
                 }
             )
@@ -99,7 +103,11 @@ fun HistoryItem(
         )
         DropdownMenu(
             expanded = isContextMenuVisible,
-            onDismissRequest = { isContextMenuVisible = false }) {
+            onDismissRequest = { isContextMenuVisible = false },
+            offset = pressOffset.copy(
+                y = pressOffset.y - itemHeight
+            )
+        ) {
             dropDownItems.forEach { item ->
                 DropdownMenuItem(onClick = {
                     item.action(word)

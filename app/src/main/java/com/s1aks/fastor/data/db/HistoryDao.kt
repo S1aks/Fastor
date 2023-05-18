@@ -5,7 +5,7 @@ import androidx.room.*
 @Dao
 interface HistoryDao {
 
-    @Query("SELECT * FROM HistoryEntity")
+    @Query("SELECT * FROM HistoryEntity ORDER BY word ASC")
     suspend fun all(): List<HistoryEntity>
 
     @Query("SELECT * FROM HistoryEntity WHERE word LIKE :word")
